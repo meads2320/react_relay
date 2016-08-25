@@ -11,10 +11,7 @@ let app = express();
 
 app.use(express.static('public'));
 
-app.use('/graphql', GraphQLHTTP({
-schema : schema,
-graphiql: true
-}));
+
 
 let db;
 let connectionString = process.env.MONGO_URL || "mongodb://meads:usfbulls23@ds031741.mlab.com:31741/rgrjs";
@@ -23,6 +20,12 @@ MongoClient.connect(connectionString, (err, database) => {
     if(err) throw err;
 
     db = database;
+
+    app.use('/graphql', GraphQLHTTP({
+        schema : schema(db),
+        graphiql: true
+    }));
+
     app.listen(3000, () => {
         console.log("listening on port 3000");
     });

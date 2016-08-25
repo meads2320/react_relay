@@ -20344,9 +20344,13 @@
 	
 	var API = {
 	    fetchLinks: function fetchLinks() {
-	        console.log('1: Fetching links from API');
-	        (0, _jquery.get)('/data/links').done(function (resp) {
-	            _ServerActions2.default.receiveLinks(resp);
+	        console.log('1: Fetching links from API using GraphQL');
+	        // get('/data/links').done(resp => { 
+	        //     ServerActions.receiveLinks(resp);
+	        // })
+	        (0, _jquery.post)('/graphql', { query: 'query{ links{ _id, title, url } }'
+	        }).done(function (resp) {
+	            _ServerActions2.default.receiveLinks(resp.data.links);
 	        });
 	    }
 	};
